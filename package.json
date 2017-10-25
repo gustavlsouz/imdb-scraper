@@ -1,0 +1,22 @@
+{
+  "name": "imdb-scraper",
+  "version": "0.0.1",
+  "description": "scraping imdb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gustavlsouz/imdb-scraper"
+  },
+  "author": "Gustavo Souza",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "date-and-time": "^0.5.0",
+    "minimist": "^1.2.0",
+    "mongoose": "^4.12.3",
+    "request": "^2.83.0"
+  }
+}
