@@ -1,28 +1,28 @@
 const mongoose = require('mongoose');
 const request = require('request');
-const minimist = require('minimist')(process.argv.slice(2));
-console.log(minimist);
+const userParams = require('minimist')(process.argv.slice(2));
+console.log(userParams);
 global.db = mongoose
 .createConnection('mongodb://localhost/imdb-scraper');
 
 const timetools = require('./lib/timetools');
-const walker = require('./lib/walker');
-const topList = require('./lib/top250List');
-const yearScraper = require('./lib/yearScraper');
+const walker = require('./lib/title/walker');
+const topList = require('./lib/top250/top250List');
+const yearScraper = require('./lib/year/scraper');
 const utils = require('./lib/utils');
 
 const main = () => {
     let timeToWait, interval
 
-    if (minimist.time > 0.2) {
-        timeToWait = +minimist.time
+    if (userParams.time > 0.2) {
+        timeToWait = +userParams.time
     } else {
         timeToWait = 1;
     }
 
     interval = timeToWait;
     
-    if (minimist.top250) {
+    if (userParams.top250) {
         topList.getidsListObj((err, idsListObj) => {
             if (err) {
                 console.log(err);
@@ -35,9 +35,9 @@ const main = () => {
                 });
             }
         });
-    } else if (minimist.inicio) {
-        let inicio = minimist.inicio
-        , quant = minimist.quant
+    } else if (userParams.inicio) {
+        let inicio = userParams.inicio
+        , quant = userParams.quant
         , ate = inicio+quant
         ;
         
@@ -51,7 +51,7 @@ const main = () => {
         }
 
     } else {
-        let params = yearScraper.checkParams(minimist.year, minimist.pages)
+        let params = yearScraper.checkParams(userParams.year, userParams.pages)
         , initialYear = params.initialYear
         , finalYear = params.finalYear
         , initialPage = params.initialPage
@@ -96,9 +96,9 @@ const main = () => {
     
 
 const checkParams = function(){
-    if (    (minimist.inicio && minimist.quant) || 
-            minimist.top250 ||
-            ( (typeof minimist.year in {"string": null, "number": null} ) && (typeof minimist.pages in {"string": null, "number": null}) )
+    if (    (userParams.inicio && userParams.quant) || 
+            userParams.top250 ||
+            ( (typeof userParams.year in {"string": null, "number": null} ) && (typeof userParams.pages in {"string": null, "number": null}) )
         ) {
         main();
     } else {
