@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const request = require('request');
 const userParams = require('minimist')(process.argv.slice(2));
 
 global.db = mongoose
@@ -33,7 +32,7 @@ const checkParams = function(){
                     (typeof userParams.fp === "number") 
             )
         ) {
-            
+
         if (!userParams.time) {
             userParams.time = 1;
         } else if (userParams.time < 0.2) {
