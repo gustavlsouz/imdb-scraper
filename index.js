@@ -17,11 +17,10 @@ const intervalWalker = require('./lib/title/interval');
 const main = () => {
     var timeToWait, interval;
 
-    if (userParams.time > 0.2) {
-        timeToWait = +userParams.time
-    } else {
-        timeToWait = 1;
+    if (!userParams.time) {
         userParams.time = 1;
+    } else if (userParams.time < 0.2) {
+        userParams.time = 0.2;
     }
     
     userParams.interval = timeToWait
