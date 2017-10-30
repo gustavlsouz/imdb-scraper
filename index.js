@@ -7,11 +7,13 @@ global.db = mongoose
 
 const timetools = require('./lib/timetools');
 const walker = require('./lib/title/walker');
-const topList = require('./lib/top250/top250List');
 const yearScraper = require('./lib/year/scraper');
 const utils = require('./lib/utils');
 const yearWalker = require('./lib/year/walker');
+const top250Walker = require('./lib/top250/walker');
+const intervalWalker = require('./lib/title/interval');
 
+// const topList = require('./lib/top250/top250List');
 const main = () => {
     var timeToWait, interval;
 
@@ -26,33 +28,9 @@ const main = () => {
     interval = timeToWait;
     
     if (userParams.top250) {
-        topList.getidsListObj((err, idsListObj) => {
-            if (err) {
-                console.log(err);
-            } else {
-                idsListObj.forEach((idMovie) => {
-                    timetools.sleep(timeToWait).then(() => {
-                        walker({"number": idMovie.id, "position": idMovie.position});
-                    });
-                    timeToWait = +(timeToWait+interval).toFixed(2);
-                });
-            }
-        });
+        top250Walker(userParams);
     } else if (userParams.inicio) {
-        let inicio = userParams.inicio
-        , quant = userParams.quant
-        , ate = inicio+quant
-        ;
-        
-        console.log("inicio:", inicio, "quant:", quant, "ate:", ate);
-        
-        for (let number = inicio; number < ate; number++) {
-            timetools.sleep(timeToWait).then(() => {
-                walker({"number": number});
-            });
-            timeToWait = +(timeToWait+interval).toFixed(2);
-        }
-
+        intervalWalker(userParams);
     } else {
         yearWalker(userParams);
     }
