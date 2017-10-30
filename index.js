@@ -1,21 +1,16 @@
 const mongoose = require('mongoose');
 const request = require('request');
 const userParams = require('minimist')(process.argv.slice(2));
-console.log(userParams);
+
 global.db = mongoose
 .createConnection('mongodb://localhost/imdb-scraper');
 
-const timetools = require('./lib/timetools');
-const walker = require('./lib/title/walker');
-const yearScraper = require('./lib/year/scraper');
-const utils = require('./lib/utils');
 const yearWalker = require('./lib/year/walker');
 const top250Walker = require('./lib/top250/walker');
 const intervalWalker = require('./lib/title/interval');
 
-// const topList = require('./lib/top250/top250List');
+
 const main = () => {
-    var timeToWait, interval;
 
     if (!userParams.time) {
         userParams.time = 1;
@@ -23,8 +18,7 @@ const main = () => {
         userParams.time = 0.2;
     }
     
-    userParams.interval = timeToWait
-    interval = timeToWait;
+    userParams.interval = userParams.time;
     
     if (userParams.top250) {
         top250Walker(userParams);
