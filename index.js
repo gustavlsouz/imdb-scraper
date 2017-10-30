@@ -10,16 +10,19 @@ const walker = require('./lib/title/walker');
 const topList = require('./lib/top250/top250List');
 const yearScraper = require('./lib/year/scraper');
 const utils = require('./lib/utils');
+const yearWalker = require('./lib/year/walker');
 
 const main = () => {
-    let timeToWait, interval
+    var timeToWait, interval;
 
     if (userParams.time > 0.2) {
         timeToWait = +userParams.time
     } else {
         timeToWait = 1;
+        userParams.time = 1;
     }
-
+    
+    userParams.interval = timeToWait
     interval = timeToWait;
     
     if (userParams.top250) {
@@ -51,46 +54,7 @@ const main = () => {
         }
 
     } else {
-        let params = yearScraper.checkParams(userParams.year, userParams.pages)
-        , initialYear = params.initialYear
-        , finalYear = params.finalYear
-        , initialPage = params.initialPage
-        , finalPage = params.finalPage
-
-        console.log(params);
-
-        let timeForPage = 0
-        , pageInterval = 60
-        ;
-
-        for (let year = initialYear; year<=finalYear; year++) {
-            for (let page = initialPage; page <= finalPage; page++) {
-                timetools.sleep(timeForPage).then(() => {
-                    let linkTarget = "http://www.imdb.com/search/title?year=" + 
-                    year + "," + year + "&page=" + page + "&ref_=adv_nxt";
-                    
-                    console.log(linkTarget);
-                    
-                    request(linkTarget, (err, res, html) => {
-                        if (err || res.statusCode !== 200) {
-                            console.log(`Erro ao requisitar página ${linkTarget}`);
-                            process.exit();
-                        } else {
-                            yearScraper.readYearPage(html, (semiLink, time) => {
-                                let number = utils.getIdFromLink(semiLink);
-                                let tempoTotal = timeToWait + time;
-                                console.log(semiLink, "tempo total:", tempoTotal);
-                                timetools.sleep( tempoTotal ).then(() => {
-                                    walker({"number": number});
-                                });
-                            });
-                        }
-                    })
-                });
-                timeForPage+=pageInterval;
-            }
-            timeToWait = +(timeToWait+interval).toFixed(2);
-        }
+        yearWalker(userParams);
     }
 };
     
