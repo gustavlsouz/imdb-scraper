@@ -12,13 +12,6 @@ const intervalWalker = require('./lib/title/interval');
 
 const main = () => {
 
-    if (!userParams.time) {
-        userParams.time = 1;
-    } else if (userParams.time < 0.2) {
-        userParams.time = 0.2;
-    }
-    
-    userParams.interval = userParams.time;
     
     if (userParams.top250) {
         top250Walker(userParams);
@@ -28,6 +21,7 @@ const main = () => {
         yearWalker(userParams);
     }
 };
+
     
 
 const checkParams = function(){
@@ -39,6 +33,14 @@ const checkParams = function(){
                     (typeof userParams.fp === "number") 
             )
         ) {
+            
+        if (!userParams.time) {
+            userParams.time = 1;
+        } else if (userParams.time < 0.2) {
+            userParams.time = 0.2;
+        }
+        
+        userParams.interval = userParams.time;
         main();
     } else {
         console.log(`Parâmetros:\n\t--inicio <numero inicial>\n\t--quant <quantidade de links para percorrer>`);
