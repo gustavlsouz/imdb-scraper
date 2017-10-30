@@ -98,14 +98,18 @@ const main = () => {
 const checkParams = function(){
     if (    (userParams.inicio && userParams.quant) || 
             userParams.top250 ||
-            ( (typeof userParams.year in {"string": null, "number": null} ) && (typeof userParams.pages in {"string": null, "number": null}) )
+            ( (typeof userParams.iy === "number" ) && 
+                    (typeof userParams.fy === "number") && 
+                    (typeof userParams.ip === "number") && 
+                    (typeof userParams.fp === "number") 
+            )
         ) {
         main();
     } else {
         console.log(`Parâmetros:\n\t--inicio <numero inicial>\n\t--quant <quantidade de links para percorrer>`);
-        console.log(`\t--time [opcional] <intercalo em segundos>`);
+        console.log(`\t--time [opcional] <intervalo em segundos>`);
         console.log(`\n\t--top250 para lista dos 250 melhores filmes`);
-        console.log(`\n\t--year <ano ou intervalo> --pages <[1-9]> \n\t\t-> ex: --year "2011-2017" --pages 3`);
+        console.log(`\n\t--iy <ano inicial> --fy <ano final>\n\t--ip <páginal inicial> --fp <página final>\n\t\t-> ex: --iy 2011 --fy 2017 --ip 3 --fp 5`);
         mongoose.disconnect();
         process.exit();
     }
