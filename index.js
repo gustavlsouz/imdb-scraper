@@ -8,10 +8,7 @@ const yearWalker = require('./lib/year/walker');
 const top250Walker = require('./lib/top250/walker');
 const intervalWalker = require('./lib/title/interval');
 
-
 const main = () => {
-
-    
     if (userParams.top250) {
         top250Walker(userParams);
     } else if (userParams.inicio) {
@@ -20,8 +17,6 @@ const main = () => {
         yearWalker(userParams);
     }
 };
-
-    
 
 const checkParams = function(){
     if (    (userParams.inicio && userParams.quant) || 

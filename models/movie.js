@@ -14,7 +14,7 @@ const movie = Schema({
     ,genre: {type:[String]}
     ,link: {type:String}
     ,createdAt: {type:String}
-    ,top250: {type:Number} //posição caso esteja entre os 250.
+    ,top250: {type:Number}
 });
 
 module.exports = db.model("movie", movie);
